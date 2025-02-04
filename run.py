@@ -348,7 +348,7 @@ class RunEnvironment:
         
     def run(self):
         """Main execution flow."""
-        self.logger.info("=== Starting Project Alice ===")
+        self.logger.info("=== Starting Project Fibo ===")
         self.logger.info("System detected: " + self.system)
         signal.signal(signal.SIGINT, self.cleanup)
         signal.signal(signal.SIGTERM, self.cleanup)
@@ -385,7 +385,7 @@ class RunEnvironment:
             self.logger.error(f"[ERROR] Fatal error: {e}")
             self.cleanup(None, None)
             
-        self.logger.info("=== Project Alice Running ===")
+        self.logger.info("=== Project Fibo Running ===")
 
     def _setup_basic_logging(self):
         """Set up basic console logging for initial operations"""
