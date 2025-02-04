@@ -1,4 +1,4 @@
-Copyright (c) 2024, Mariano Molina
+Copyright (c) 2024, Noah Harris
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
