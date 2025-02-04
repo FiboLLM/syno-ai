@@ -1,0 +1,39 @@
+# Use the official Node.js image as a base image
+FROM node:16
+
+# Create a user with UID 1000 if it doesn't already exist
+RUN id -u 1000 &>/dev/null || adduser --disabled-password --gecos '' --uid 1000 appuser
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install --legacy-peer-deps --network-timeout=100000
+
+# Install TypeScript and nodemon globally
+RUN npm install -g typescript nodemon
+
+# Copy the rest of the application code
+COPY --chown=1000:1000 . .
+
+# Set the working directory ownership
+RUN chown -R 1000:1000 /app
+
+# Build the TypeScript code
+RUN npm run build
+
+# Expose the application port
+EXPOSE $BACKEND_PORT_DOCKER
+
+# Health check to indicate when the service is ready
+HEALTHCHECK --interval=10s --timeout=10s --start-period=30s --retries=20 \
+  CMD curl -f http://${REACT_APP_BACKEND_HOST}:${BACKEND_PORT_DOCKER}/api/health || exit 1
+  
+# Switch to the user with UID 1000
+USER 1000
+
+# Start the backend server
+CMD ["node", "dist/index.js"] 

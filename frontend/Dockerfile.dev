@@ -1,0 +1,29 @@
+# Use the official Node.js image as a base image
+FROM node:18-alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY frontend/package*.json ./
+
+RUN printf "fetch-retry-maxtimeout=300000\nfetch-retry-mintimeout=20000\nfetch-retries=5\n" > .npmrc
+
+# Install dependencies with the --legacy-peer-deps flag
+# Clean install dependencies
+RUN npm ci --legacy-peer-deps
+
+# Add `/app/node_modules/.bin` to $PATH
+ENV PATH=/app/node_modules/.bin:$PATH
+
+# Copy the rest of the application code
+COPY frontend/ .
+
+# Set the environment variable for development mode
+ENV NODE_ENV=development
+ENV CHOKIDAR_USEPOLLING=true
+ENV WATCHPACK_POLLING=true
+
+EXPOSE ${FRONTEND_PORT_DOCKER}
+# Start the development server
+CMD ["npm", "start"]

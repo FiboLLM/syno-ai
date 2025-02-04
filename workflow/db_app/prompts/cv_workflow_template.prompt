@@ -1,0 +1,34 @@
+The user has requested the creation of a custom {% if inputs.request_cover_letter %}CV and Cover Letter{% else %}CV{% endif %}. 
+Here's the available data for context, but remember to focus on tackling the CURRENT TASK:
+# Job description: this is the role the user wants to apply to
+{{ inputs_job_description }}
+# User's history: this is all the information we have about the user's professional background
+{{ inputs_user_history }}
+{% if inputs_additional_details %}
+# Additional details: provided by the user
+{{ inputs_additional_details }}
+{% endif %}
+{% if outputs %}
+{% if user_clarifications_task and cv_clarifications_task %}
+Based on the provided data we came up with a set of clarifying questions:
+{{ cv_clarifications_task }}
+Here is the user input regarding our questions:
+{{ user_clarifications_task }} 
+{% endif %}
+{% if cv_brainstorming_task %}
+We spent some time brainstorming how to succeed on this task, and these are the recommendations we came up with:
+{{ cv_brainstorming_task }}
+{% endif %}
+{% if cover_letter %}
+Here is the approved cover letter we prepared:
+{{ cover_letter }}
+{% endif %}
+{% if cv_draft %}
+Here is the approved CV draft we prepared:
+{{ cv_draft }}
+{% endif %}
+{% endif %}
+{% if task_description %}
+## CURRENT TASK: 
+{{ task_description }}
+{% endif %}
